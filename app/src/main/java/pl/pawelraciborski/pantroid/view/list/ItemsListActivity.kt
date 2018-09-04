@@ -2,14 +2,13 @@ package pl.pawelraciborski.pantroid.view.list
 
 import android.os.Bundle
 import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_items_list.*
-
 import pl.pawelraciborski.pantroid.R
 
-class ItemsListActivity : AppCompatActivity() {
+class ItemsListActivity : DaggerAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

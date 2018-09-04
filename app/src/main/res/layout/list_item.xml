@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-  xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools">
   <data>
     <variable
-      name="viewModel"
+      name="text"
       type="String"/>
   </data>
   <android.support.constraint.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".view.list.ItemsListActivityFragment"
-    tools:showIn="@layout/activity_items_list">
+    android:padding="10dp">
 
-    <android.support.v7.widget.RecyclerView
-      android:id="@+id/rvItems"
+    <TextView
       android:layout_width="match_parent"
-      android:layout_height="match_parent"/>
+      android:layout_height="wrap_content"
+      android:padding="10dp"
+      android:background="@color/colorAccent"
+      android:text="@{text}"
+      android:textAlignment="center"
+      tools:text="TEXT"/>
 
   </android.support.constraint.ConstraintLayout>
 </layout>
