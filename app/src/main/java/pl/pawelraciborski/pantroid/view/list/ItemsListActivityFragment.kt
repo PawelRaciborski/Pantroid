@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import dagger.android.support.DaggerFragment
 import pl.pawelraciborski.pantroid.R
 import pl.pawelraciborski.pantroid.databinding.ListItemBinding
+import pl.pawelraciborski.pantroid.vm.ItemsListActivityFragmentViewModel
 import java.util.*
 import javax.inject.Inject
 
@@ -21,6 +22,9 @@ class ItemsListActivityFragment : DaggerFragment() {
 
     @Inject
     lateinit var random: Random
+
+    @Inject
+    lateinit var viewModel: ItemsListActivityFragmentViewModel
 
     private lateinit var recyclerView: RecyclerView
 
