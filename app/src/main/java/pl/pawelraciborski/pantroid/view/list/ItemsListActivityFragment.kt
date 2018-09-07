@@ -1,5 +1,6 @@
 package pl.pawelraciborski.pantroid.view.list
 
+import android.arch.lifecycle.Observer
 import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
 import android.os.Bundle
@@ -10,9 +11,11 @@ import android.view.View
 import android.view.ViewGroup
 import dagger.android.support.DaggerFragment
 import pl.pawelraciborski.pantroid.R
+import pl.pawelraciborski.pantroid.databinding.FragmentItemsListBinding
 import pl.pawelraciborski.pantroid.databinding.ListItemBinding
+import pl.pawelraciborski.pantroid.view.util.autoCleared
 import pl.pawelraciborski.pantroid.vm.ItemsListActivityFragmentViewModel
-import java.util.*
+import pl.pawelraciborski.pantroid.vm.PantryListItem
 import javax.inject.Inject
 
 /**
@@ -21,32 +24,63 @@ import javax.inject.Inject
 class ItemsListActivityFragment : DaggerFragment() {
 
     @Inject
-    lateinit var random: Random
-
-    @Inject
     lateinit var viewModel: ItemsListActivityFragmentViewModel
 
-    private lateinit var recyclerView: RecyclerView
+    private var binding by autoCleared<FragmentItemsListBinding>()
+    private var rvAdapter by autoCleared<ItemsAdapter>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_items_list, container, false)
-        recyclerView = view.findViewById<RecyclerView>(R.id.rvItems).apply {
+
+        binding = DataBindingUtil.inflate(
+                inflater,
+                R.layout.fragment_items_list,
+                container,
+                false
+        )
+
+        return binding.root
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        initRecyclerView()
+    }
+
+    private fun initRecyclerView() {
+        binding.rvItems.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
-            adapter = ItemsAdapter()
+            rvAdapter = ItemsAdapter()
+            adapter = rvAdapter
         }
-        return view
+
+        viewModel.items.observe(this, Observer { result ->
+            result?.let {
+                rvAdapter.updateValues(it)
+            }
+        })
     }
 }
 
 class ItemsAdapter : RecyclerView.Adapter<ItemsAdapter.ViewHolder<ListItemBinding>>() {
+
+    private lateinit var binding: ListItemBinding
+
+    private val values = mutableListOf<PantryListItem>()
+
+    fun updateValues(items: List<PantryListItem>) {
+        with(values) {
+            clear()
+            addAll(items)
+        }
+        notifyDataSetChanged()
+    }
+
     override fun onCreateViewHolder(viewGroup: ViewGroup, position: Int): ViewHolder<ListItemBinding> {
         createBinding(viewGroup)
         return ItemsAdapter.ViewHolder(binding)
     }
-
-    private lateinit var binding: ListItemBinding
 
     private fun createBinding(parent: ViewGroup) {
         binding = DataBindingUtil.inflate(
@@ -57,10 +91,10 @@ class ItemsAdapter : RecyclerView.Adapter<ItemsAdapter.ViewHolder<ListItemBindin
         )
     }
 
-    override fun getItemCount(): Int = 5
+    override fun getItemCount() = values.size
 
     override fun onBindViewHolder(holder: ViewHolder<ListItemBinding>, position: Int) {
-        binding.text = position.toString()
+        binding.text = values[position].toString()
     }
 
     class ViewHolder<out T : ViewDataBinding>(binding: T) : RecyclerView.ViewHolder(binding.root)
