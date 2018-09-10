@@ -10,13 +10,14 @@ import javax.inject.Inject
 
 class ItemsListActivityFragmentViewModel @Inject constructor(
 ) : ViewModel() {
+
     val items: MutableLiveData<List<PantryListItem>> = MutableLiveData()
 
     init {
         val tmpItems = mutableListOf<PantryListItem>()
 
         for (i in 1..10) {
-            tmpItems.add(PantryListItem(i.toLong(), "Name $i", i*2))
+            tmpItems.add(PantryListItem(i.toLong(), "Name $i", i * 2))
         }
 
         items.postValue(tmpItems)
