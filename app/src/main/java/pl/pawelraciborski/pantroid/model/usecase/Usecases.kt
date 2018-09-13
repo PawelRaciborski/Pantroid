@@ -1,5 +1,6 @@
 package pl.pawelraciborski.pantroid.model.usecase
 
+import io.reactivex.Flowable
 import io.reactivex.Single
 
 /**
@@ -7,4 +8,8 @@ import io.reactivex.Single
  */
 interface Usecase<T> {
     fun execute(): Single<T>
+}
+
+interface FlowableUsecase<T> {
+    fun execute(): Flowable<T>
 }

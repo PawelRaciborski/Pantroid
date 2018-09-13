@@ -8,12 +8,25 @@ import pl.pawelraciborski.pantroid.model.db.Repository
  * Created by Pawel Raciborski on 10.09.2018.
  */
 
-interface InsertPantryItemUsecase : Usecase<PantryItem>
+interface InsertPantryItemUsecase : Usecase<PantryItem> {
+    fun init(pantryItem: PantryItem): InsertPantryItemUsecase
+}
 
 class InsertPantryItemUsecaseImpl(
         private val repository: Repository
 ) : InsertPantryItemUsecase {
-    override fun execute(): Single<PantryItem> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    private lateinit var pantryItem: PantryItem
+
+    override fun init(pantryItem: PantryItem): InsertPantryItemUsecase {
+        this.pantryItem = pantryItem
+        return this
     }
+
+    override fun execute(): Single<PantryItem> =
+            repository
+                    .insertPantryItem(pantryItem)
+                    .flatMap {
+                        repository.getItemById(it)
+                                .firstOrError()
+                    }
 }
