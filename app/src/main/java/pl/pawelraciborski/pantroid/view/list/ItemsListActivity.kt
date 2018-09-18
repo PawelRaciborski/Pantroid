@@ -1,12 +1,13 @@
 package pl.pawelraciborski.pantroid.view.list
 
+import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.view.Menu
 import android.view.MenuItem
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_items_list.*
 import pl.pawelraciborski.pantroid.R
+import pl.pawelraciborski.pantroid.view.additem.AddItemActivity
 
 class ItemsListActivity : DaggerAppCompatActivity() {
 
@@ -15,9 +16,8 @@ class ItemsListActivity : DaggerAppCompatActivity() {
         setContentView(R.layout.activity_items_list)
         setSupportActionBar(toolbar)
 
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+        fab.setOnClickListener {
+            startActivity(Intent(this, AddItemActivity::class.java))
         }
     }
 

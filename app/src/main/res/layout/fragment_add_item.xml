@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
+  <data>
+    <variable
+      name="viewModel"
+      type="pl.pawelraciborski.pantroid.vm.AddItemActivityFragmentViewModel"/>
+  </data>
+  <android.support.constraint.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    tools:context=".view.additem.AddItemActivityFragment"
+    tools:showIn="@layout/activity_add_item">
+
+    <EditText
+      android:id="@+id/etItemName"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:hint="@string/pantry_item_name_hint"
+      android:inputType="text"
+      android:text="@={viewModel.name}"/>
+
+    <EditText
+      android:id="@+id/etQuantity"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="5dp"
+      android:hint="@string/item_quantity_hint"
+      android:inputType="numberDecimal"
+      android:text="@={viewModel.quantity}"
+      app:layout_constraintEnd_toEndOf="@+id/etItemName"
+      app:layout_constraintStart_toStartOf="@+id/etItemName"
+      app:layout_constraintTop_toBottomOf="@+id/etItemName"/>
+
+    <Button
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="8dp"
+      android:text="@string/save_btn_label"
+      app:layout_constraintEnd_toEndOf="@+id/etItemName"
+      app:layout_constraintStart_toStartOf="@+id/etItemName"
+      app:layout_constraintTop_toBottomOf="@+id/etQuantity"
+      android:onClick="@{() -> viewModel.onSave()}"/>
+
+  </android.support.constraint.ConstraintLayout>
+</layout>

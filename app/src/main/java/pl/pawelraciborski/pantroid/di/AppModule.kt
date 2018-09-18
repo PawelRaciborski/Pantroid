@@ -1,7 +1,5 @@
 package pl.pawelraciborski.pantroid.di
 
-import android.app.Application
-import android.content.Context
 import dagger.Module
 import dagger.Provides
 import pl.pawelraciborski.pantroid.PantroidApplication
@@ -14,7 +12,10 @@ import javax.inject.Singleton
 /**
  * Created by Pawel Raciborski on 30.08.2018.
  */
-@Module(includes = [ViewModelModule::class])
+@Module(includes = [
+    ViewModelModule::class,
+    UsecasesModule::class
+])
 class AppModule {
 
     @Provides

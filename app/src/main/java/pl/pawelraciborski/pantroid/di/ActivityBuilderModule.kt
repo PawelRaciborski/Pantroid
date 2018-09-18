@@ -2,6 +2,7 @@ package pl.pawelraciborski.pantroid.di
 
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
+import pl.pawelraciborski.pantroid.view.additem.AddItemActivity
 import pl.pawelraciborski.pantroid.view.list.ItemsListActivity
 
 /**
@@ -11,4 +12,7 @@ import pl.pawelraciborski.pantroid.view.list.ItemsListActivity
 abstract class ActivityBuilderModule {
     @ContributesAndroidInjector(modules = [ItemsListActivityFragmentProvider::class])
     abstract fun bindItemsListActivity(): ItemsListActivity
+
+    @ContributesAndroidInjector(modules = [AddItemActivityFragmentProvider::class])
+    abstract fun bindAddItemActivity(): AddItemActivity
 }

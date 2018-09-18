@@ -6,6 +6,7 @@ import dagger.Binds
 import dagger.MapKey
 import dagger.Module
 import dagger.multibindings.IntoMap
+import pl.pawelraciborski.pantroid.vm.AddItemActivityFragmentViewModel
 import pl.pawelraciborski.pantroid.vm.ItemsListActivityFragmentViewModel
 import kotlin.reflect.KClass
 
@@ -31,6 +32,13 @@ abstract class ViewModelModule {
     @ViewModelKey(ItemsListActivityFragmentViewModel::class)
     abstract fun bindItemsListActivityFragmentViewModel(
             itemsListActivityFragmentViewModel: ItemsListActivityFragmentViewModel
+    ): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(AddItemActivityFragmentViewModel::class)
+    abstract fun bindAddItemActivityFragmentViewModel(
+            addItemActivityFragmentViewModel: AddItemActivityFragmentViewModel
     ): ViewModel
 
     @Binds

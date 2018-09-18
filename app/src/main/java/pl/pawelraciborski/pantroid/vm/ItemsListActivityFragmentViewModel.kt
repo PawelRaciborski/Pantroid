@@ -6,7 +6,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.schedulers.Schedulers
-import pl.pawelraciborski.pantroid.model.PantryItem
 import pl.pawelraciborski.pantroid.model.usecase.GetAllPantryItemsUsecase
 import pl.pawelraciborski.pantroid.model.usecase.InsertPantryItemUsecase
 import java.util.*
@@ -38,7 +37,7 @@ class ItemsListActivityFragmentViewModel @Inject constructor(
 
         compositeDisposable +=
                 insertPantryItemUsecase
-                        .init(PantryItem("Item ${random.nextInt()}", random.nextInt()))
+                        .init("Item ${random.nextInt()}", random.nextInt())
                         .execute()
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())

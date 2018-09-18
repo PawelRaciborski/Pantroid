@@ -9,7 +9,7 @@ import pl.pawelraciborski.pantroid.model.db.Repository
  */
 
 interface InsertPantryItemUsecase : Usecase<PantryItem> {
-    fun init(pantryItem: PantryItem): InsertPantryItemUsecase
+    fun init(name: String, quantity: Int): InsertPantryItemUsecase
 }
 
 class InsertPantryItemUsecaseImpl(
@@ -17,8 +17,8 @@ class InsertPantryItemUsecaseImpl(
 ) : InsertPantryItemUsecase {
     private lateinit var pantryItem: PantryItem
 
-    override fun init(pantryItem: PantryItem): InsertPantryItemUsecase {
-        this.pantryItem = pantryItem
+    override fun init(name: String, quantity: Int): InsertPantryItemUsecase {
+        this.pantryItem = PantryItem(name, quantity)
         return this
     }
 
