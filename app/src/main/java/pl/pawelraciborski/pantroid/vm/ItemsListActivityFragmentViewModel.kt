@@ -7,8 +7,6 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.schedulers.Schedulers
 import pl.pawelraciborski.pantroid.model.usecase.GetAllPantryItemsUsecase
-import pl.pawelraciborski.pantroid.model.usecase.InsertPantryItemUsecase
-import java.util.*
 import javax.inject.Inject
 
 /**
@@ -17,8 +15,6 @@ import javax.inject.Inject
 
 class ItemsListActivityFragmentViewModel @Inject constructor(
         private val compositeDisposable: CompositeDisposable,
-        private val random: Random,
-        insertPantryItemUsecase: InsertPantryItemUsecase,
         getAllPantryItemsUsecase: GetAllPantryItemsUsecase
 ) : ViewModel() {
 
@@ -29,20 +25,11 @@ class ItemsListActivityFragmentViewModel @Inject constructor(
                 getAllPantryItemsUsecase.execute()
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe {
-                            items.postValue(it.map {
-                                PantryListItem(it.id!!, it.name, it.quantity)
-                            })
-                        }
-
-        compositeDisposable +=
-                insertPantryItemUsecase
-                        .init("Item ${random.nextInt()}", random.nextInt())
-                        .execute()
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe { result, exception ->
-                            //TODO: add logs here
+                        .subscribe { result ->
+                            items.postValue(
+                                    result.map {
+                                        PantryListItem(it.id!!, it.name, it.quantity)
+                                    })
                         }
     }
 

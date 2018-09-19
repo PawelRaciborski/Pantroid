@@ -16,8 +16,6 @@ class AddItemActivityFragmentViewModel @Inject constructor(
         private val compositeDisposable: CompositeDisposable,
         private val insertPantryItemUsecase: InsertPantryItemUsecase
 ) : ViewModel() {
-
-
     val name = MutableLiveData<String>()
     val quantity = MutableLiveData<String>()
 
