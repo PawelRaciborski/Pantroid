@@ -13,4 +13,8 @@ class AddItemActivity : DaggerAppCompatActivity() {
         setSupportActionBar(toolbar)
     }
 
+    companion object {
+        const val SELECTED_ITEM_ID = "SELECTED_ITEM_ID"
+    }
+
 }

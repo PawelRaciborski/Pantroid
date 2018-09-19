@@ -7,6 +7,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.schedulers.Schedulers
 import pl.pawelraciborski.pantroid.model.usecase.GetAllPantryItemsUsecase
+import pl.pawelraciborski.pantroid.vm.ItemsListActivityFragmentViewModel.NavigationEvent.EDIT
 import javax.inject.Inject
 
 /**
@@ -18,7 +19,13 @@ class ItemsListActivityFragmentViewModel @Inject constructor(
         getAllPantryItemsUsecase: GetAllPantryItemsUsecase
 ) : ViewModel() {
 
+    enum class NavigationEvent {
+        EDIT
+    }
+
     val items: MutableLiveData<List<PantryListItem>> = MutableLiveData()
+
+    val navigationEventLiveData = SingleLiveData<Pair<PantryListItem, NavigationEvent>>()
 
     init {
         compositeDisposable +=
@@ -26,10 +33,8 @@ class ItemsListActivityFragmentViewModel @Inject constructor(
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe { result ->
-                            items.postValue(
-                                    result.map {
-                                        PantryListItem(it.id!!, it.name, it.quantity)
-                                    })
+                            items.value =
+                                    result.map { PantryListItem(it.id!!, it.name, it.quantity) }
                         }
     }
 
@@ -39,5 +44,9 @@ class ItemsListActivityFragmentViewModel @Inject constructor(
             compositeDisposable.dispose()
         }
         super.onCleared()
+    }
+
+    fun onItemSelected(pantryListItem: PantryListItem) {
+        navigationEventLiveData.value = pantryListItem to EDIT
     }
 }

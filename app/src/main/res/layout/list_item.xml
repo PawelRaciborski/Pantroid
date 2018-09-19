@@ -3,8 +3,8 @@
   xmlns:tools="http://schemas.android.com/tools">
   <data>
     <variable
-      name="text"
-      type="String"/>
+      name="item"
+      type="pl.pawelraciborski.pantroid.vm.PantryListItem"/>
   </data>
   <android.support.constraint.ConstraintLayout
     android:layout_width="match_parent"
@@ -16,7 +16,7 @@
       android:layout_height="wrap_content"
       android:padding="10dp"
       android:background="@color/colorAccent"
-      android:text="@{text}"
+      android:text="@{@string/list_item_text_placeholder(item.name, item.id, item.quantity)}"
       android:textAlignment="center"
       tools:text="TEXT"/>
 

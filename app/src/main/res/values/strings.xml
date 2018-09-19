@@ -5,4 +5,5 @@
   <string name="item_quantity_hint">Item quantity</string>
   <string name="pantry_item_name_hint">Pantry item name</string>
   <string name="save_btn_label">SAVE</string>
+  <string name="list_item_text_placeholder">%1$s with ID: %2$d (%3$d) xD</string>
 </resources>

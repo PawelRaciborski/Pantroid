@@ -1,6 +1,7 @@
 package pl.pawelraciborski.pantroid.view.list
 
 import android.arch.lifecycle.Observer
+import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -12,8 +13,10 @@ import dagger.android.support.DaggerFragment
 import pl.pawelraciborski.pantroid.R
 import pl.pawelraciborski.pantroid.databinding.FragmentItemsListBinding
 import pl.pawelraciborski.pantroid.databinding.ListItemBinding
+import pl.pawelraciborski.pantroid.view.additem.AddItemActivity
 import pl.pawelraciborski.pantroid.view.util.autoCleared
 import pl.pawelraciborski.pantroid.vm.ItemsListActivityFragmentViewModel
+import pl.pawelraciborski.pantroid.vm.ItemsListActivityFragmentViewModel.NavigationEvent.EDIT
 import pl.pawelraciborski.pantroid.vm.PantryListItem
 import javax.inject.Inject
 
@@ -44,13 +47,26 @@ class ItemsListActivityFragment : DaggerFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         initRecyclerView()
+        registerForNavigationEvents()
+    }
+
+    private fun registerForNavigationEvents() {
+        viewModel.navigationEventLiveData.observe(this, Observer { pair ->
+            pair?.let {
+                when (it.second) {
+                    EDIT -> startActivity(Intent(context, AddItemActivity::class.java).apply {
+                        putExtra(AddItemActivity.SELECTED_ITEM_ID, it.first.id)
+                    })
+                }
+            }
+        })
     }
 
     private fun initRecyclerView() {
         binding.rvItems.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
-            rvAdapter = ItemsAdapter()
+            rvAdapter = ItemsAdapter(viewModel::onItemSelected)
             adapter = rvAdapter
         }
 
@@ -61,7 +77,7 @@ class ItemsListActivityFragment : DaggerFragment() {
         })
     }
 
-    private class ItemsAdapter : RecyclerView.Adapter<ItemsAdapter.PantryItemViewHolder>() {
+    private class ItemsAdapter(val callback: (PantryListItem) -> Unit) : RecyclerView.Adapter<ItemsAdapter.PantryItemViewHolder>() {
 
         private val values = mutableListOf<PantryListItem>()
 
@@ -77,22 +93,27 @@ class ItemsListActivityFragment : DaggerFragment() {
             return ItemsAdapter.PantryItemViewHolder(createBinding(viewGroup))
         }
 
-        private fun createBinding(parent: ViewGroup) = DataBindingUtil.inflate<ListItemBinding>(
-                LayoutInflater.from(parent.context),
-                R.layout.list_item,
-                parent,
-                false
-        )
+        private fun createBinding(parent: ViewGroup): ListItemBinding =
+                DataBindingUtil.inflate<ListItemBinding>(
+                        LayoutInflater.from(parent.context),
+                        R.layout.list_item,
+                        parent,
+                        false
+                ).apply {
+                    root.setOnClickListener {
+                        callback.invoke(item!!)
+                    }
+                }
 
         override fun getItemCount() = values.size
 
         override fun onBindViewHolder(holder: PantryItemViewHolder, position: Int) {
-            holder.bind(values[position], position)
+            holder.bind(values[position])
         }
 
         class PantryItemViewHolder(private val binding: ListItemBinding) : RecyclerView.ViewHolder(binding.root) {
-            fun bind(item: PantryListItem, position: Int) {
-                binding.text = item.let { "Position($position) ${item.name} with ID: ${item.id} (${item.quantity})" }
+            fun bind(item: PantryListItem) {
+                binding.item = item
             }
         }
     }
