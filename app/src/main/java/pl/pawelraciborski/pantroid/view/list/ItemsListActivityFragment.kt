@@ -2,7 +2,6 @@ package pl.pawelraciborski.pantroid.view.list
 
 import android.arch.lifecycle.Observer
 import android.databinding.DataBindingUtil
-import android.databinding.ViewDataBinding
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -61,42 +60,40 @@ class ItemsListActivityFragment : DaggerFragment() {
             }
         })
     }
-}
 
-class ItemsAdapter : RecyclerView.Adapter<ItemsAdapter.ViewHolder<ListItemBinding>>() {
+    private class ItemsAdapter : RecyclerView.Adapter<ItemsAdapter.PantryItemViewHolder>() {
 
-    private lateinit var binding: ListItemBinding
+        private val values = mutableListOf<PantryListItem>()
 
-    private val values = mutableListOf<PantryListItem>()
-
-    fun updateValues(items: List<PantryListItem>) {
-        with(values) {
-            clear()
-            addAll(items)
+        fun updateValues(items: List<PantryListItem>) {
+            with(values) {
+                clear()
+                addAll(items)
+            }
+            notifyDataSetChanged()
         }
-        notifyDataSetChanged()
-    }
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, position: Int): ViewHolder<ListItemBinding> {
-        createBinding(viewGroup)
-        return ItemsAdapter.ViewHolder(binding)
-    }
+        override fun onCreateViewHolder(viewGroup: ViewGroup, position: Int): PantryItemViewHolder {
+            return ItemsAdapter.PantryItemViewHolder(createBinding(viewGroup))
+        }
 
-    private fun createBinding(parent: ViewGroup) {
-        binding = DataBindingUtil.inflate(
+        private fun createBinding(parent: ViewGroup) = DataBindingUtil.inflate<ListItemBinding>(
                 LayoutInflater.from(parent.context),
                 R.layout.list_item,
                 parent,
                 false
         )
+
+        override fun getItemCount() = values.size
+
+        override fun onBindViewHolder(holder: PantryItemViewHolder, position: Int) {
+            holder.bind(values[position], position)
+        }
+
+        class PantryItemViewHolder(private val binding: ListItemBinding) : RecyclerView.ViewHolder(binding.root) {
+            fun bind(item: PantryListItem, position: Int) {
+                binding.text = item.let { "Position($position) ${item.name} with ID: ${item.id} (${item.quantity})" }
+            }
+        }
     }
-
-    override fun getItemCount() = values.size
-
-    override fun onBindViewHolder(holder: ViewHolder<ListItemBinding>, position: Int) {
-        binding.text = values[position].toString()
-    }
-
-    class ViewHolder<out T : ViewDataBinding>(binding: T) : RecyclerView.ViewHolder(binding.root)
-
 }
