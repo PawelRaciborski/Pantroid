@@ -1,5 +1,6 @@
 package pl.pawelraciborski.pantroid.view.additem
 
+import android.os.Bundle
 import pl.pawelraciborski.pantroid.R
 import pl.pawelraciborski.pantroid.databinding.FragmentAddItemBinding
 import pl.pawelraciborski.pantroid.view.BaseFragment
@@ -15,5 +16,22 @@ class AddItemActivityFragment
 
     override fun setupViewModel() {
         binding.viewModel = viewModel
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let { viewModel.init(it.getInt(ITEM_ID)) }
+
+    }
+
+    companion object {
+        private const val ITEM_ID = "ITEM_ID"
+        fun newInstance(itemId: Int? = null) = AddItemActivityFragment().apply {
+            itemId?.let {
+                arguments = Bundle().apply {
+                    putInt(ITEM_ID, itemId)
+                }
+            }
+        }
     }
 }
