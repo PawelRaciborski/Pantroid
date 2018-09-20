@@ -5,7 +5,7 @@ import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_add_item.*
 import pl.pawelraciborski.pantroid.R
 import pl.pawelraciborski.pantroid.view.util.addFragment
-import pl.pawelraciborski.pantroid.view.util.getIntExtraOrNull
+import pl.pawelraciborski.pantroid.view.util.getLongExtraOrNull
 
 class AddItemActivity : DaggerAppCompatActivity() {
 
@@ -15,7 +15,7 @@ class AddItemActivity : DaggerAppCompatActivity() {
         setSupportActionBar(toolbar)
 
         addFragment(AddItemActivityFragment.newInstance(
-                intent.getIntExtraOrNull(SELECTED_ITEM_ID)),
+                intent.getLongExtraOrNull(SELECTED_ITEM_ID)),
                 R.id.flContent
         )
     }

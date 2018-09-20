@@ -4,10 +4,7 @@ import dagger.Module
 import dagger.Provides
 import io.reactivex.disposables.CompositeDisposable
 import pl.pawelraciborski.pantroid.model.db.Repository
-import pl.pawelraciborski.pantroid.model.usecase.GetAllPantryItemsUsecase
-import pl.pawelraciborski.pantroid.model.usecase.GetAllPantryItemsUsecaseImpl
-import pl.pawelraciborski.pantroid.model.usecase.InsertPantryItemUsecase
-import pl.pawelraciborski.pantroid.model.usecase.InsertPantryItemUsecaseImpl
+import pl.pawelraciborski.pantroid.model.usecase.*
 
 /**
  * Created by Pawel Raciborski on 14.09.2018.
@@ -22,6 +19,10 @@ class UsecasesModule {
     @Provides
     fun provideGetAllPantryItemsUsecase(repository: Repository): GetAllPantryItemsUsecase =
             GetAllPantryItemsUsecaseImpl(repository)
+
+    @Provides
+    fun provideGetItemUsecase(repository: Repository): GetItemUsecase =
+            GetItemUsecaseImpl(repository)
 
     @Provides
     fun provideCompositeDisposable(): CompositeDisposable = CompositeDisposable()

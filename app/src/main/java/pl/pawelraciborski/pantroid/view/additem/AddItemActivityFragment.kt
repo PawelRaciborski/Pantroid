@@ -20,16 +20,16 @@ class AddItemActivityFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let { viewModel.init(it.getInt(ITEM_ID)) }
+        arguments?.let { viewModel.init(it.getLong(ITEM_ID)) }
 
     }
 
     companion object {
         private const val ITEM_ID = "ITEM_ID"
-        fun newInstance(itemId: Int? = null) = AddItemActivityFragment().apply {
+        fun newInstance(itemId: Long? = null) = AddItemActivityFragment().apply {
             itemId?.let {
                 arguments = Bundle().apply {
-                    putInt(ITEM_ID, itemId)
+                    putLong(ITEM_ID, itemId)
                 }
             }
         }

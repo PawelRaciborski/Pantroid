@@ -18,9 +18,9 @@ fun AppCompatActivity.addFragment(fragment: Fragment, frameId: Int) {
     supportFragmentManager.inTransaction { add(frameId, fragment) }
 }
 
-fun Intent.getIntExtraOrNull(name: String) =
+fun Intent.getLongExtraOrNull(name: String) =
         if (hasExtra(name)) {
-            getIntExtra(name, -1)
+            getLongExtra(name, -1L)
         } else {
             null
         }

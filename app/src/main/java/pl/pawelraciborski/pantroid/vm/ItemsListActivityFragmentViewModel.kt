@@ -1,7 +1,6 @@
 package pl.pawelraciborski.pantroid.vm
 
 import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
@@ -15,9 +14,9 @@ import javax.inject.Inject
  */
 
 class ItemsListActivityFragmentViewModel @Inject constructor(
-        private val compositeDisposable: CompositeDisposable,
+        compositeDisposable: CompositeDisposable,
         getAllPantryItemsUsecase: GetAllPantryItemsUsecase
-) : ViewModel() {
+) : BaseViewModel(compositeDisposable) {
 
     enum class NavigationEvent {
         EDIT
