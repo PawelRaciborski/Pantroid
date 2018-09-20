@@ -25,5 +25,9 @@ class UsecasesModule {
             GetItemUsecaseImpl(repository)
 
     @Provides
+    fun provideUpdatePantryItemUsecase(repository: Repository): UpdatePantryItemUsecase =
+            UpdatePantryItemUsecaseImpl(repository)
+
+    @Provides
     fun provideCompositeDisposable(): CompositeDisposable = CompositeDisposable()
 }

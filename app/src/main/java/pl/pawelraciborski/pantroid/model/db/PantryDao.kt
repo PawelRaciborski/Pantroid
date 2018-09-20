@@ -1,9 +1,6 @@
 package pl.pawelraciborski.pantroid.model.db
 
-import android.arch.persistence.room.Dao
-import android.arch.persistence.room.Insert
-import android.arch.persistence.room.OnConflictStrategy
-import android.arch.persistence.room.Query
+import android.arch.persistence.room.*
 import io.reactivex.Flowable
 import pl.pawelraciborski.pantroid.model.PantryItem
 
@@ -15,6 +12,9 @@ import pl.pawelraciborski.pantroid.model.PantryItem
 interface PantryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertPantryItem(pantryItem: PantryItem): Long
+
+    @Update
+    fun updatePantryItem(pantryItem: PantryItem): Int
 
     @Query("SELECT * from pantryitem")
     fun getAllPantryItems(): Flowable<List<PantryItem>>

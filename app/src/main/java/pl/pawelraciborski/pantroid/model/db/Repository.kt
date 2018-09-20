@@ -10,6 +10,7 @@ import pl.pawelraciborski.pantroid.model.PantryItem
 
 interface Repository {
     fun insertPantryItem(pantryItem: PantryItem): Single<Long>
+    fun updatePantryItem(pantryItem: PantryItem): Single<Int>
     fun getItemById(id: Long): Flowable<PantryItem>
     fun getAllItems(): Flowable<List<PantryItem>>
 }
@@ -17,15 +18,15 @@ interface Repository {
 class RepositoryImpl(
         private val dao: PantryDao
 ) : Repository {
-    override fun getAllItems(): Flowable<List<PantryItem>> {
-        return dao.getAllPantryItems()
-    }
+    override fun updatePantryItem(pantryItem: PantryItem): Single<Int> =
+            Single.fromCallable { dao.updatePantryItem(pantryItem) }
+
+    override fun getAllItems(): Flowable<List<PantryItem>> =
+            dao.getAllPantryItems()
 
     override fun getItemById(id: Long): Flowable<PantryItem> =
             dao.getPantryItemById(id)
 
     override fun insertPantryItem(pantryItem: PantryItem): Single<Long> =
-            Single.fromCallable {
-                dao.insertPantryItem(pantryItem)
-            }
+            Single.fromCallable { dao.insertPantryItem(pantryItem) }
 }

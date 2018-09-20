@@ -19,6 +19,7 @@
       android:id="@+id/etItemName"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:afterTextChanged="@{()->viewModel.onTextChanged()}"
       android:hint="@string/pantry_item_name_hint"
       android:inputType="text"
       android:text="@={viewModel.name}"/>
@@ -28,6 +29,7 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginTop="5dp"
+      android:afterTextChanged="@{()->viewModel.onTextChanged()}"
       android:hint="@string/item_quantity_hint"
       android:inputType="numberDecimal"
       android:text="@={viewModel.quantity}"
@@ -39,11 +41,12 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginTop="8dp"
+      android:enabled="@{viewModel.canBeSavedó}"
+      android:onClick="@{() -> viewModel.onSave()}"
       android:text="@string/save_btn_label"
       app:layout_constraintEnd_toEndOf="@+id/etItemName"
       app:layout_constraintStart_toStartOf="@+id/etItemName"
-      app:layout_constraintTop_toBottomOf="@+id/etQuantity"
-      android:onClick="@{() -> viewModel.onSave()}"/>
+      app:layout_constraintTop_toBottomOf="@+id/etQuantity"/>
 
   </android.support.constraint.ConstraintLayout>
 </layout>

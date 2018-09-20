@@ -37,8 +37,6 @@ class AddItemActivityFragment
         })
 
         arguments?.let { viewModel.init(it.getLong(ITEM_ID)) }
-
-
     }
 
     companion object {
