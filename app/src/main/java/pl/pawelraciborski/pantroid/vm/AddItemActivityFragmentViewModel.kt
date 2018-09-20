@@ -2,11 +2,10 @@ package pl.pawelraciborski.pantroid.vm
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
-import io.reactivex.schedulers.Schedulers
 import pl.pawelraciborski.pantroid.model.usecase.InsertPantryItemUsecase
+import pl.pawelraciborski.pantroid.model.usecase.defaultSubscribe
 import javax.inject.Inject
 
 /**
@@ -24,10 +23,9 @@ class AddItemActivityFragmentViewModel @Inject constructor(
             compositeDisposable += insertPantryItemUsecase
                     .init(it, quantity.value?.toIntOrNull() ?: 0)
                     .execute()
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe { result, exception ->
+                    .defaultSubscribe { t1, _ ->
                         // TODO: handle this!!
+                        print(t1)
                     }
         }
     }
@@ -37,5 +35,9 @@ class AddItemActivityFragmentViewModel @Inject constructor(
             compositeDisposable.dispose()
         }
         super.onCleared()
+    }
+
+    fun init(itemId: Int) {
+        //TODO: handle initialization
     }
 }
