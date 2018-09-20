@@ -16,15 +16,13 @@ import javax.inject.Inject
 class ItemsListActivityFragmentViewModel @Inject constructor(
         compositeDisposable: CompositeDisposable,
         getAllPantryItemsUsecase: GetAllPantryItemsUsecase
-) : BaseViewModel(compositeDisposable) {
+) : BaseViewModel<ItemsListActivityFragmentViewModel.NavigationEvent, PantryListItem>(compositeDisposable) {
 
     enum class NavigationEvent {
         EDIT
     }
 
     val items: MutableLiveData<List<PantryListItem>> = MutableLiveData()
-
-    val navigationEventLiveData = SingleLiveData<Pair<PantryListItem, NavigationEvent>>()
 
     init {
         compositeDisposable +=
@@ -37,7 +35,6 @@ class ItemsListActivityFragmentViewModel @Inject constructor(
                         }
     }
 
-
     override fun onCleared() {
         if (!compositeDisposable.isDisposed) {
             compositeDisposable.dispose()
@@ -46,6 +43,6 @@ class ItemsListActivityFragmentViewModel @Inject constructor(
     }
 
     fun onItemSelected(pantryListItem: PantryListItem) {
-        navigationEventLiveData.value = pantryListItem to EDIT
+        postUiEvent(EDIT toEventWith pantryListItem)
     }
 }

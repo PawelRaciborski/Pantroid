@@ -15,18 +15,26 @@ class AddItemActivityFragmentViewModel @Inject constructor(
         compositeDisposable: CompositeDisposable,
         private val insertPantryItemUsecase: InsertPantryItemUsecase,
         private val getItemUsecase: GetItemUsecase
-) : BaseViewModel(compositeDisposable) {
+) : BaseViewModel<AddItemActivityFragmentViewModel.NavigationEvent, Any>(compositeDisposable) {
+
+    enum class NavigationEvent {
+        BACK,
+        DISPLAY_SAVE_ERROR
+    }
+
     val name = MutableLiveData<String>()
     val quantity = MutableLiveData<String>()
 
     fun onSave() {
-        name.value?.let {
+        name.value?.let { itemName ->
             compositeDisposable += insertPantryItemUsecase
-                    .init(it, quantity.value?.toIntOrNull() ?: 0)
+                    .init(itemName, quantity.value?.toIntOrNull() ?: 0)
                     .execute()
-                    .defaultSubscribe { t1, _ ->
-                        // TODO: handle this!!
-                        print(t1)
+                    .defaultSubscribe { retult, throwable ->
+                        throwable?.let {
+                            postUiEvent(UiEvent(NavigationEvent.DISPLAY_SAVE_ERROR))
+                        }
+                        postUiEvent(UiEvent(NavigationEvent.BACK))
                     }
         }
     }

@@ -51,12 +51,14 @@ class ItemsListActivityFragment : DaggerFragment() {
     }
 
     private fun registerForNavigationEvents() {
-        viewModel.navigationEventLiveData.observe(this, Observer { pair ->
-            pair?.let {
-                when (it.second) {
-                    EDIT -> startActivity(Intent(context, AddItemActivity::class.java).apply {
-                        putExtra(AddItemActivity.SELECTED_ITEM_ID, it.first.id)
-                    })
+        viewModel.navigationEventLiveData.observe(this, Observer {
+            it?.let { event ->
+                when (event.type) {
+                    EDIT -> event.value?.let { value ->
+                        startActivity(Intent(context, AddItemActivity::class.java).apply {
+                            putExtra(AddItemActivity.SELECTED_ITEM_ID, value.id)
+                        })
+                    }
                 }
             }
         })
